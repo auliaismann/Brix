@@ -22,17 +22,22 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Inisialisasi Firebase
+        FirebaseApp.initializeApp(this)
+
         enableEdgeToEdge()
         setContent {
-                NavigationView()
-            }
+            NavigationView()
         }
     }
+}
 
 @Composable
 fun NavigationView() {
@@ -42,17 +47,15 @@ fun NavigationView() {
         composable("welcome_screen"){ WelcomeScreen(navController = navController) }
         composable("login"){ LoginScreen(navController = navController) }
         composable("signup"){ SignupScreen(navController = navController) }
+        composable("home_screen"){ HomeScreen(navController = navController) }
     }
 }
-
-
-
 
 @Composable
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(key1 = true) {
         delay(5000L)
-        navController.navigate("welcome_screen"){
+        navController.navigate("welcome_screen") {
             popUpTo("splash_screen") { inclusive = true }
         }
     }
@@ -60,14 +63,12 @@ fun SplashScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.LightGray),
-
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Image(
             painter = painterResource(id = R.drawable.logo),
-            "",
+            contentDescription = "",
             modifier = Modifier
                 .width(200.dp)
                 .height(200.dp)

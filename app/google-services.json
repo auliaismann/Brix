@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "372839777349",
+    "project_id": "db-brix",
+    "storage_bucket": "db-brix.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372839777349:android:b4b74af557216779bf4f2c",
+        "android_client_info": {
+          "package_name": "com.example.brix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAODkcPMCH1N9G1OybiDijjZBFPNL959AQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

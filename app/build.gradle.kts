@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.gms.google-services") version "4.4.2" apply false
 }
 
 android {
@@ -60,6 +61,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.litert.metadata)
+    implementation(libs.firebase.database.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.firebase.vertexai)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -71,5 +75,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha09")
     implementation ("androidx.compose.ui:ui:1.5.0")
     implementation ("androidx.compose.material3:material3:1.1.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
 }
