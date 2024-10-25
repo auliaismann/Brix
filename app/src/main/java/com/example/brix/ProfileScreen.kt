@@ -42,12 +42,28 @@ fun ProfileScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray), // Background abu-abu muda
-        contentAlignment = Alignment.Center
+            .background(Color.LightGray) // Background abu-abu muda
     ) {
+        // Tombol Pengaturan di pojok kanan atas
+        IconButton(
+            onClick = { /* Navigasi ke halaman pengaturan atau aksi lainnya */ },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp) // Padding agar tombol tidak terlalu ke tepi layar
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.setting), // Ganti dengan ikon pengaturan
+                contentDescription = "Settings",
+                tint = Color.Black
+            )
+        }
+
+        // Konten Profil di tengah layar
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .align(Alignment.Center) // Pusatkan di layar
+                .padding(16.dp)
         ) {
             // Foto Profil
             Image(
@@ -62,18 +78,9 @@ fun ProfileScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(24.dp))
 
             // Kartu Detail
-            ProfileDetailCard(
-                label = "Name",
-                value = "Tasa"
-            )
-            ProfileDetailCard(
-                label = "Phone Number",
-                value = "080080808080"
-            )
-            ProfileDetailCard(
-                label = "E-mail",
-                value = "tasa@gmail.com"
-            )
+            ProfileDetailCard(label = "Name", value = "Tasa")
+            ProfileDetailCard(label = "Phone Number", value = "080080808080")
+            ProfileDetailCard(label = "E-mail", value = "tasa@gmail.com")
         }
 
         // BottomNavigationBar di bagian bawah layar
@@ -127,7 +134,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
                     painterResource(id = R.drawable.home_abu),
                     contentDescription = "Home",
                     modifier = Modifier.size(32.dp),
-                    tint = Color.Unspecified // Menggunakan warna asli dari ikon
+                    tint = Color.Unspecified
                 )
             },
             label = { Text("Home") },
@@ -140,7 +147,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
                     painterResource(id = R.drawable.location_abu),
                     contentDescription = "Location",
                     modifier = Modifier.size(32.dp),
-                    tint = Color.Unspecified // Menggunakan warna asli dari ikon
+                    tint = Color.Unspecified
                 )
             },
             label = { Text("Location") },
@@ -153,7 +160,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
                     painterResource(id = R.drawable.chat_abu),
                     contentDescription = "Chat",
                     modifier = Modifier.size(32.dp),
-                    tint = Color.Unspecified // Menggunakan warna asli dari ikon
+                    tint = Color.Unspecified
                 )
             },
             label = { Text("Chat") },
@@ -166,7 +173,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
                     painterResource(id = R.drawable.profile_ijo),
                     contentDescription = "Profile",
                     modifier = Modifier.size(32.dp),
-                    tint = Color.Unspecified // Menggunakan warna asli dari ikon
+                    tint = Color.Unspecified
                 )
             },
             label = { Text("Profile") },

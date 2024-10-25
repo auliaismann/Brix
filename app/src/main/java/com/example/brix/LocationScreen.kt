@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun LocationScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -35,7 +34,7 @@ fun HomeScreen(navController: NavController) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Tambahkan gambar profil, nama pengguna, dan ikon pengaturan di sini
+            // Gambar profil, nama pengguna, dan ikon pengaturan
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -45,19 +44,20 @@ fun HomeScreen(navController: NavController) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth() // Mengisi lebar penuh
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Gambar profil (gunakan gambar lingkaran)
+                        // Gambar profil
                         Image(
                             painter = painterResource(id = R.drawable.kucing), // Ganti dengan resource gambar profil
                             contentDescription = "Profile Image",
                             modifier = Modifier
-                                .size(64.dp) // Ukuran gambar yang disesuaikan
+                                .size(70.dp) // Ukuran gambar
                                 .clip(CircleShape) // Membuat gambar menjadi lingkaran
                                 .background(Color.Gray) // Background warna abu-abu di belakang gambar (opsional)
+                                .padding(4.dp) // Padding di sekitar gambar
                         )
                         Spacer(modifier = Modifier.width(8.dp)) // Spasi antara gambar dan nama
                         Text(
@@ -68,7 +68,6 @@ fun HomeScreen(navController: NavController) {
                             )
                         ) // Ganti dengan nama pengguna
                     }
-
                     // Icon pengaturan
                     IconButton(onClick = { /* Tambahkan aksi untuk ikon pengaturan */ }) {
                         Icon(
@@ -90,120 +89,114 @@ fun HomeScreen(navController: NavController) {
             ) {
                 item {
                     // Kotak pertama
-                    CustomBox(
+                    LocationCustomBox(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(120.dp)
                             .padding(start = 14.dp, end = 14.dp),
-                        shape = RoundedCornerShape(16.dp) // Bisa ganti bentuk di sini
+                        shape = RoundedCornerShape(16.dp)
                     ) {
                         Row(
                             modifier = Modifier.fillMaxSize(),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.katalog), // Ganti dengan resource icon katalog
-                                    contentDescription = "Katalog Icon",
-                                    modifier = Modifier.size(32.dp),
-                                    tint = Color.Unspecified
-                                )
-                                Text(text = "Katalog")
-                            }
-
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.supplier),
-                                    contentDescription = "Supplier Icon",
-                                    modifier = Modifier.size(32.dp),
-                                    tint = Color.Unspecified // Gunakan warna asli
-                                )
-                                Text(text = "Supplier")
-                            }
-
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.komonitas), // Ganti dengan resource icon komunitas
-                                    contentDescription = "Komunitas Icon",
-                                    modifier = Modifier.size(32.dp),
-                                    tint = Color.Unspecified // Gunakan warna asli
-                                )
-                                Text(text = "Komunitas")
-                            }
-
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.konsultasi), // Ganti dengan resource icon konsultasi
-                                    contentDescription = "Konsultasi Icon",
-                                    modifier = Modifier.size(32.dp),
-                                    tint = Color.Unspecified // Gunakan warna asli
-                                )
-                                Text(text = "Konsultasi")
-                            }
+                            FeatureItem("Katalog", R.drawable.katalog)
+                            FeatureItem("Supplier", R.drawable.supplier)
+                            FeatureItem("Komunitas", R.drawable.komonitas)
+                            FeatureItem("Konsultasi", R.drawable.konsultasi)
                         }
                     }
                 }
 
                 item {
-                    // Kotak kedua
-                    CustomBox(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp)
-                            .padding(start = 14.dp, end = 14.dp),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        LazyRow(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            contentPadding = PaddingValues(horizontal = 16.dp)
-                        ) {
-                            items(4) { index ->
-                                Image(
-                                    painter = painterResource(id = when(index) {
-                                        0 -> R.drawable.arsitek
-                                        1 -> R.drawable.arsitek
-                                        2 -> R.drawable.arsitek
-                                        else -> R.drawable.arsitek
-                                    }),
-                                    contentDescription = "Arsitek ${index + 1}",
-                                    modifier = Modifier
-                                        .size(80.dp) // Ukuran gambar
-                                        .clip(RoundedCornerShape(8.dp)) // Bentuk gambar
-                                )
-                            }
-                        }
-                    }
-                }
-
-                item {
-                    // Kotak ketiga
-                    CustomBox(
+                    // Kotak kedua - Daftar hasil toko
+                    LocationCustomBox(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(500.dp)
                             .padding(start = 14.dp, end = 14.dp),
-                        shape = RoundedCornerShape(16.dp) // Bisa ganti bentuk di sini
+                        shape = RoundedCornerShape(16.dp)
                     ) {
-                        Text(text = "Konten lainnya")
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp) // Spasi antar item
+                        ) {
+                            // Pencarian dan hasil
+                            Text(
+                                text = "Hasil terdekat",
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = MaterialTheme.typography.titleLarge.fontSize
+                                ),
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+
+                            // List hasil pencarian toko
+                            SearchResultItem(
+                                storeName = "Toko Pembangunan Gedagedi",
+                                address = "Jln. lurus sampe jatuh"
+                            )
+                            SearchResultItem(
+                                storeName = "Toko Belutut tcihh",
+                                address = "Jln. lurus trs mundur"
+                            )
+                            SearchResultItem(
+                                storeName = "Toko Pembangunan Alam",
+                                address = "Jln. aleah sampe sendiri"
+                            )
+                        }
                     }
                 }
             }
         }
 
         // BottomNavigationBar tetap berada di posisi paling bawah
-        BottomNavigationBar(
+        LocationBottomNavigationBar(
             navController = navController,
             modifier = Modifier.align(Alignment.BottomCenter) // Posisi di paling bawah
         )
     }
 }
 
+// Fungsi untuk menampilkan fitur item dalam kotak pertama
+@Composable
+fun FeatureItem(text: String, iconId: Int) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Icon(
+            painter = painterResource(id = iconId),
+            contentDescription = "$text Icon",
+            modifier = Modifier.size(32.dp),
+            tint = Color.Unspecified
+        )
+        Text(text = text)
+    }
+}
+
+// Fungsi yang menampilkan item hasil pencarian toko
+@Composable
+fun SearchResultItem(storeName: String, address: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(8.dp))
+            .padding(12.dp)
+    ) {
+        Text(
+            text = storeName,
+            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+        )
+        Text(
+            text = address,
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
 
 // Composable untuk CustomBox dengan shape yang bisa diatur
 @Composable
-fun CustomBox(
+fun LocationCustomBox(
     modifier: Modifier = Modifier,
     shape: CornerBasedShape,
     content: @Composable () -> Unit
@@ -219,14 +212,14 @@ fun CustomBox(
 
 // Bottom Navigation Bar dengan item navigasi
 @Composable
-fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modifier) {
+fun LocationBottomNavigationBar(navController: NavController, modifier: Modifier = Modifier) {
     NavigationBar(
         modifier = modifier.fillMaxWidth()
     ) {
         NavigationBarItem(
             icon = {
                 Icon(
-                    painterResource(id = R.drawable.home_ijo),
+                    painterResource(id = R.drawable.home_abu),
                     contentDescription = "Home",
                     modifier = Modifier.size(32.dp),
                     tint = Color.Unspecified // Menggunakan warna asli dari ikon
@@ -239,7 +232,7 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
         NavigationBarItem(
             icon = {
                 Icon(
-                    painterResource(id = R.drawable.location_abu),
+                    painterResource(id = R.drawable.location_ijo),
                     contentDescription = "Location",
                     modifier = Modifier.size(32.dp),
                     tint = Color.Unspecified // Menggunakan warna asli dari ikon
@@ -281,6 +274,6 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
 // Fungsi preview untuk menampilkan UI di Android Studio
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() {
-    HomeScreen(navController = rememberNavController())
+fun LocationScreenPreview() {
+    LocationScreen(navController = rememberNavController())
 }
