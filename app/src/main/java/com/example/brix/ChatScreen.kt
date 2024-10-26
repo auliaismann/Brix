@@ -26,10 +26,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 // Inisialisasi FontFamily untuk Poppins-Thin
-val poppinsThin = FontFamily(Font(resId = R.font.poppins_light))
+val poppinsLightC = FontFamily(Font(resId = R.font.poppins_light))
 
 @Composable
-fun LocationScreen(navController: NavController) {
+fun ChatScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -71,7 +71,7 @@ fun LocationScreen(navController: NavController) {
                         Text(
                             text = "Tasa",
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                fontFamily = poppinsThin,
+                                fontFamily = poppinsLightC,
                                 fontSize = MaterialTheme.typography.titleLarge.fontSize,
                                 fontWeight = FontWeight.Bold
                             )
@@ -96,30 +96,8 @@ fun LocationScreen(navController: NavController) {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    // Kotak pertama
-                    LocationCustomBox(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .padding(start = 14.dp, end = 14.dp),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            FeatureItem("Katalog", R.drawable.katalog)
-                            FeatureItem("Supplier", R.drawable.supplier)
-                            FeatureItem("Komunitas", R.drawable.komonitas)
-                            FeatureItem("Konsultasi", R.drawable.konsultasi)
-                        }
-                    }
-                }
-
-                item {
-                    // Kotak kedua - Daftar hasil toko
-                    LocationCustomBox(
+                    // Kotak Pertama - Daftar hasil toko
+                    ChatCustomBox(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(500.dp)
@@ -132,38 +110,6 @@ fun LocationScreen(navController: NavController) {
                                 .verticalScroll(rememberScrollState()),
                             verticalArrangement = Arrangement.spacedBy(8.dp) // Spasi antar item
                         ) {
-                            // Icon target dan teks lokasi
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 11.dp, end = 12.dp, bottom = 8.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.Start
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.target), // Sesuaikan dengan ID resource ikon target
-                                    contentDescription = "Target Icon",
-                                    modifier = Modifier.size(24.dp),
-                                    tint = Color.Unspecified // Menggunakan warna asli dari ikon
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Column {
-                                    Text(
-                                        text = "Gunakan lokasi saat ini",
-                                        style = MaterialTheme.typography.bodyMedium.copy(
-                                            fontFamily = poppinsThin,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = MaterialTheme.typography.titleLarge.fontSize
-                                        )
-                                    )
-                                    Text(
-                                        text = "Jln. Blekping in ur area",
-                                        style = MaterialTheme.typography.bodyMedium.copy(
-                                            fontFamily = poppinsThin
-                                        )
-                                    )
-                                }
-                            }
                             // Kotak Pencarian
                             Column(
                                 modifier = Modifier
@@ -174,39 +120,39 @@ fun LocationScreen(navController: NavController) {
                                 Text(
                                     text = "Nama Barang",
                                     style = MaterialTheme.typography.bodyMedium.copy(
-                                        fontFamily = poppinsThin,
+                                        fontFamily = poppinsLightC,
                                         fontWeight = FontWeight.Bold
                                     ),
                                     modifier = Modifier.padding(bottom = 4.dp)
                                 )
-                                SearchBox(
+                                SearchBoxC(
                                     placeholderText = "Pasir Halus",
                                     onSearchClick = { /* Tambahkan aksi untuk pencarian */ }
                                 )
                             }
 
                             // List hasil pencarian toko
-                            SearchResultItem(
+                            SearchResultItemC(
                                 storeName = "Toko Pembangunan Gedagedi",
-                                address = "Jln. ive been married for long time ago"
+                                address = "Jln. ea"
                             )
-                            SearchResultItem(
+                            SearchResultItemC(
                                 storeName = "Toko Belutut tcihh",
                                 address = "Jln. Dingin tetapi tidak kejam"
                             )
-                            SearchResultItem(
+                            SearchResultItemC(
                                 storeName = "Toko beda agama",
                                 address = "Jln. in aja dulu"
                             )
-                            SearchResultItem(
+                            SearchResultItemC(
                                 storeName = "Toko Zigma Rizz",
                                 address = "Jln. Skibidi"
                             )
-                            SearchResultItem(
+                            SearchResultItemC(
                                 storeName = "Toko Wait..",
                                 address = "Jln. He don't love me like ily"
                             )
-                            SearchResultItem(
+                            SearchResultItemC(
                                 storeName = "Toko APT",
                                 address = "Jln. Rose blekping"
                             )
@@ -217,7 +163,7 @@ fun LocationScreen(navController: NavController) {
         }
 
         // BottomNavigationBar tetap berada di posisi paling bawah
-        LocationBottomNavigationBar(
+        ChatBottomNavigationBar(
             navController = navController,
             modifier = Modifier.align(Alignment.BottomCenter) // Posisi di paling bawah
         )
@@ -225,7 +171,7 @@ fun LocationScreen(navController: NavController) {
 }
 
 @Composable
-fun SearchBox(
+fun SearchBoxC(
     placeholderText: String,
     onSearchClick: () -> Unit
 ) {
@@ -255,7 +201,7 @@ fun SearchBox(
 }
 
 @Composable
-fun FeatureItem(text: String, iconId: Int) {
+fun FeatureItemC(text: String, iconId: Int) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(
             painter = painterResource(id = iconId),
@@ -271,7 +217,7 @@ fun FeatureItem(text: String, iconId: Int) {
 }
 
 @Composable
-fun SearchResultItem(storeName: String, address: String) {
+fun SearchResultItemC(storeName: String, address: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -283,20 +229,20 @@ fun SearchResultItem(storeName: String, address: String) {
         Text(
             text = storeName,
             style = MaterialTheme.typography.bodyLarge.copy(
-                fontFamily = poppinsThin,
+                fontFamily = poppinsLightC,
                 fontWeight = FontWeight.Bold
             )
         )
         Text(
             text = address,
-            style = MaterialTheme.typography.bodyMedium.copy(fontFamily = poppinsThin)
+            style = MaterialTheme.typography.bodyMedium.copy(fontFamily = poppinsLightC)
         )
     }
 }
 
 // Composable untuk CustomBox dengan shape yang bisa diatur
 @Composable
-fun LocationCustomBox(
+fun ChatCustomBox(
     modifier: Modifier = Modifier,
     shape: CornerBasedShape,
     content: @Composable () -> Unit
@@ -312,7 +258,7 @@ fun LocationCustomBox(
 
 // Bottom Navigation Bar dengan item navigasi
 @Composable
-fun LocationBottomNavigationBar(navController: NavController, modifier: Modifier = Modifier) {
+fun ChatBottomNavigationBar(navController: NavController, modifier: Modifier = Modifier) {
     NavigationBar(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -332,7 +278,7 @@ fun LocationBottomNavigationBar(navController: NavController, modifier: Modifier
         NavigationBarItem(
             icon = {
                 Icon(
-                    painterResource(id = R.drawable.location_ijo),
+                    painterResource(id = R.drawable.location_abu),
                     contentDescription = "Location",
                     modifier = Modifier.size(32.dp),
                     tint = Color.Unspecified // Menggunakan warna asli dari ikon
@@ -345,35 +291,35 @@ fun LocationBottomNavigationBar(navController: NavController, modifier: Modifier
         NavigationBarItem(
             icon = {
                 Icon(
-                    painterResource(id = R.drawable.chat_abu),
+                    painterResource(id = R.drawable.chat_ijo),
                     contentDescription = "Chat",
                     modifier = Modifier.size(32.dp),
                     tint = Color.Unspecified // Menggunakan warna asli dari ikon
                 )
             },
             label = { Text("Chat") },
-            selected = false,
+            selected = true,
             onClick = { navController.navigate("chat_screen") }
         )
         NavigationBarItem(
             icon = {
                 Icon(
                     painterResource(id = R.drawable.profile_abu),
-                    contentDescription = "Profile",
+                    contentDescription = "Others",
                     modifier = Modifier.size(32.dp),
                     tint = Color.Unspecified // Menggunakan warna asli dari ikon
                 )
             },
-            label = { Text("Profile") },
+            label = { Text("Others") },
             selected = false,
-            onClick = { navController.navigate("profile_screen") }
+            onClick = { navController.navigate("others_screen") }
         )
     }
 }
 
-// Fungsi preview untuk menampilkan UI di Android Studio
 @Preview(showBackground = true)
 @Composable
-fun LocationScreenPreview() {
-    LocationScreen(navController = rememberNavController())
+fun ChatScreenPreview() {
+    val navController = rememberNavController()
+    ChatScreen(navController = navController)
 }

@@ -20,6 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+
+val poppinsLight = FontFamily(
+    Font(R.font.poppins_light, FontWeight.Light)
+)
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -64,7 +70,8 @@ fun HomeScreen(navController: NavController) {
                             text = "Tasa",
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontSize = MaterialTheme.typography.titleLarge.fontSize, // Membuat teks lebih besar
-                                fontWeight = FontWeight.Bold // Membuat teks menjadi bold
+                                fontWeight = FontWeight.Bold, // Membuat teks menjadi bold
+                                fontFamily = poppinsLight
                             )
                         ) // Ganti dengan nama pengguna
                     }
@@ -109,7 +116,10 @@ fun HomeScreen(navController: NavController) {
                                     modifier = Modifier.size(32.dp),
                                     tint = Color.Unspecified
                                 )
-                                Text(text = "Katalog")
+                                Text(text = "Katalog",
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        fontFamily = poppinsLight
+                                    ))
                             }
 
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -119,7 +129,10 @@ fun HomeScreen(navController: NavController) {
                                     modifier = Modifier.size(32.dp),
                                     tint = Color.Unspecified // Gunakan warna asli
                                 )
-                                Text(text = "Supplier")
+                                Text(text = "Supplier",
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        fontFamily = poppinsLight
+                                    ))
                             }
 
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -129,7 +142,10 @@ fun HomeScreen(navController: NavController) {
                                     modifier = Modifier.size(32.dp),
                                     tint = Color.Unspecified // Gunakan warna asli
                                 )
-                                Text(text = "Komunitas")
+                                Text(text = "Komunitas",
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        fontFamily = poppinsLight
+                                    ))
                             }
 
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -139,7 +155,10 @@ fun HomeScreen(navController: NavController) {
                                     modifier = Modifier.size(32.dp),
                                     tint = Color.Unspecified // Gunakan warna asli
                                 )
-                                Text(text = "Konsultasi")
+                                Text(text = "Konsultasi",
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        fontFamily = poppinsLight
+                                    ))
                             }
                         }
                     }
@@ -186,7 +205,10 @@ fun HomeScreen(navController: NavController) {
                             .padding(start = 14.dp, end = 14.dp),
                         shape = RoundedCornerShape(16.dp) // Bisa ganti bentuk di sini
                     ) {
-                        Text(text = "Konten lainnya")
+                        Text(text = "Konten lainnya",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontFamily = poppinsLight
+                            ))
                     }
                 }
             }
