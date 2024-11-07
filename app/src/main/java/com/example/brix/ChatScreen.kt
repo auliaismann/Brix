@@ -224,7 +224,8 @@ fun SearchResultItemC(storeName: String, address: String) {
             .padding(8.dp)
             .background(Color.White, shape = RoundedCornerShape(8.dp))
             .border(2.dp, Color(0xFFB0A070), shape = RoundedCornerShape(8.dp)) // Menambahkan garis hijau army
-            .padding(12.dp)
+            .padding(12.dp),
+        horizontalAlignment = Alignment.Start // Mengatur alignment horizontal ke start
     ) {
         Text(
             text = storeName,
@@ -237,6 +238,20 @@ fun SearchResultItemC(storeName: String, address: String) {
             text = address,
             style = MaterialTheme.typography.bodyMedium.copy(fontFamily = poppinsLightC)
         )
+
+        // Tombol Contact
+        Button(
+            onClick = { /* Tambahkan aksi untuk menghubungi */ },
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .align(Alignment.End), // Mengatur tombol agar berada di pojok kanan
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Black) // Warna latar belakang hitam
+        ) {
+            Text(
+                text = "Contact",
+                color = Color.White // Warna teks putih
+            )
+        }
     }
 }
 
