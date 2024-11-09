@@ -24,6 +24,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.sp
+
+
+
+
 
 // Inisialisasi FontFamily untuk Poppins-Thin
 val poppinsThin = FontFamily(Font(resId = R.font.poppins_light))
@@ -146,7 +151,7 @@ fun LocationScreen(navController: NavController) {
                                     modifier = Modifier.size(24.dp),
                                     tint = Color.Unspecified // Menggunakan warna asli dari ikon
                                 )
-                                Spacer(modifier = Modifier.width(8.dp))
+                                Spacer(modifier = Modifier.width(9.dp))
                                 Column {
                                     Text(
                                         text = "Gunakan lokasi saat ini",
@@ -174,11 +179,12 @@ fun LocationScreen(navController: NavController) {
                                 Text(
                                     text = "Nama Barang",
                                     style = MaterialTheme.typography.bodyMedium.copy(
-                                        fontFamily = poppinsThin,
-                                        fontWeight = FontWeight.Bold
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold  // This will use the default system font bold
                                     ),
                                     modifier = Modifier.padding(bottom = 4.dp)
                                 )
+
                                 SearchBox(
                                     placeholderText = "Pasir Halus",
                                     onSearchClick = { /* Tambahkan aksi untuk pencarian */ }
@@ -260,12 +266,19 @@ fun FeatureItem(text: String, iconId: Int) {
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = "$text Icon",
-            modifier = Modifier.size(32.dp),
-            tint = Color.Unspecified
+            modifier = Modifier
+                .size(50.dp) // Size of the icon
+                .clip(RoundedCornerShape(20.dp)), // This is equivalent to a Rectangle
+            tint = Color.Unspecified // Use the original color of the icon
         )
+
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyMedium.copy(fontFamily = poppinsThin)
+            style = MaterialTheme.typography.bodySmall.copy( // Using bodySmall for smaller size
+                fontFamily = poppinsThin,
+                fontWeight = FontWeight.Normal, // Change to FontWeight.Bold if you want bold text
+                fontSize = 13.sp // Adjust the font size to your preference (12sp here)
+            )
         )
     }
 }

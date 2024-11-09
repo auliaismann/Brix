@@ -181,9 +181,9 @@ fun HomeScreen(navController: NavController) {
                             items(4) { index ->
                                 Image(
                                     painter = painterResource(id = when(index) {
-                                        0 -> R.drawable.arsitek
+                                        0 -> R.drawable.bahanbangunan
                                         1 -> R.drawable.arsitek
-                                        2 -> R.drawable.arsitek
+                                        2 -> R.drawable.arsitekturbangunan
                                         else -> R.drawable.arsitek
                                     }),
                                     contentDescription = "Arsitek ${index + 1}",

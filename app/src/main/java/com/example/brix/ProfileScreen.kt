@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.foundation.border
 import com.example.brix.ui.theme.BrixTheme
 
 class ProfileActivity : ComponentActivity() {
@@ -58,14 +59,15 @@ fun ProfileScreen(navController: NavController) {
             )
         }
 
-        // Konten Profil di tengah layar
+        // Konten Profil di tengah atas layar
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .align(Alignment.Center) // Pusatkan di layar
-                .padding(16.dp)
+                .fillMaxWidth()                // Memastikan konten memiliki lebar penuh
+                .align(Alignment.TopCenter)     // Posisikan di tengah atas
+                .padding(top = 100.dp)           // Tambahkan padding jika diperlukan
         ) {
-            // Foto Profil
+
             Image(
                 painter = painterResource(id = R.drawable.kucing),
                 contentDescription = "Profile Picture",
@@ -73,6 +75,7 @@ fun ProfileScreen(navController: NavController) {
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
+                    .border(2.dp, Color.Gray, CircleShape) // Border untuk gambar
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -98,7 +101,7 @@ fun ProfileDetailCard(label: String, value: String) {
         border = BorderStroke(1.dp, Color(0xFFB0A070)),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(horizontal = 16.dp, vertical = 4.dp) // Tambahkan padding untuk margin antar kartu
     ) {
         Row(
             modifier = Modifier
@@ -177,8 +180,8 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
                 )
             },
             label = { Text("Profile") },
-            selected = false,
-            onClick = { navController.navigate("profile_screen") }
+            selected = true, // Menunjukkan bahwa halaman profil sedang aktif
+            onClick = { /* Saat ini di halaman profil, tidak perlu navigasi ulang */ }
         )
     }
 }
