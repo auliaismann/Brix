@@ -20,7 +20,7 @@ fun CButton(
     onClick: () -> Unit = {},
     text: String,
 ){
-    Button(onClick = { /*TODO*/},
+    Button(onClick = onClick,
         shape = MaterialTheme.shapes.large,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Black

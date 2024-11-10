@@ -105,7 +105,11 @@ fun SignupScreen(
 
                             // Button Confirm
                             Button(
-                                onClick = { /* No action */ },
+                                onClick = {
+                                    navController.navigate("home_screen") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                },
                                 modifier = Modifier
                                     .width(150.dp) // Set the width of the button
                                     .height(40.dp) // Set the height of the button
@@ -212,7 +216,8 @@ fun SignupScreen(
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontFamily = poppinsFontFamily,
-                            color = Color.Black
+                            color = Color.Black,
+                            fontWeight = FontWeight(800)
                         ),
                         modifier = Modifier.clickable {
                             navController.navigate("login") // Ensure "login" route is defined in your NavHost

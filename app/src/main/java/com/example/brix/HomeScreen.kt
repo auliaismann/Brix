@@ -2,6 +2,7 @@ package com.example.brix
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -113,7 +115,7 @@ fun HomeScreen(navController: NavController) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.katalog), // Ganti dengan resource icon katalog
                                     contentDescription = "Katalog Icon",
-                                    modifier = Modifier.size(32.dp),
+                                    modifier = Modifier.size(40.dp),
                                     tint = Color.Unspecified
                                 )
                                 Text(text = "Katalog",
@@ -122,24 +124,12 @@ fun HomeScreen(navController: NavController) {
                                     ))
                             }
 
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.supplier),
-                                    contentDescription = "Supplier Icon",
-                                    modifier = Modifier.size(32.dp),
-                                    tint = Color.Unspecified // Gunakan warna asli
-                                )
-                                Text(text = "Supplier",
-                                    style = MaterialTheme.typography.bodyMedium.copy(
-                                        fontFamily = poppinsLight
-                                    ))
-                            }
 
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.komonitas), // Ganti dengan resource icon komunitas
                                     contentDescription = "Komunitas Icon",
-                                    modifier = Modifier.size(32.dp),
+                                    modifier = Modifier.size(40.dp),
                                     tint = Color.Unspecified // Gunakan warna asli
                                 )
                                 Text(text = "Komunitas",
@@ -148,12 +138,17 @@ fun HomeScreen(navController: NavController) {
                                     ))
                             }
 
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.clickable {
+                                    navController.navigate("chat_screen")
+                                }
+                            ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.konsultasi), // Ganti dengan resource icon konsultasi
                                     contentDescription = "Konsultasi Icon",
-                                    modifier = Modifier.size(32.dp),
-                                    tint = Color.Unspecified // Gunakan warna asli
+                                    modifier = Modifier.size(40.dp),
+                                    tint = Color.Unspecified
                                 )
                                 Text(text = "Konsultasi",
                                     style = MaterialTheme.typography.bodyMedium.copy(
@@ -179,18 +174,31 @@ fun HomeScreen(navController: NavController) {
                             contentPadding = PaddingValues(horizontal = 16.dp)
                         ) {
                             items(4) { index ->
-                                Image(
-                                    painter = painterResource(id = when(index) {
-                                        0 -> R.drawable.bahanbangunan
-                                        1 -> R.drawable.arsitek
-                                        2 -> R.drawable.arsitekturbangunan
-                                        else -> R.drawable.arsitek
-                                    }),
-                                    contentDescription = "Arsitek ${index + 1}",
+
+                                Box(
                                     modifier = Modifier
-                                        .size(80.dp) // Ukuran gambar
-                                        .clip(RoundedCornerShape(8.dp)) // Bentuk gambar
-                                )
+                                        .size(80.dp)
+                                        .background(Color.White, shape = RoundedCornerShape(8.dp))
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .shadow(4.dp, RoundedCornerShape(8.dp))
+                                        .padding(4.dp)
+                                ) {
+
+                                    Image(
+                                        painter = painterResource(
+                                            id = when (index) {
+                                                0 -> R.drawable.bahanbangunan
+                                                1 -> R.drawable.arsitek
+                                                2 -> R.drawable.arsitekturbangunan
+                                                else -> R.drawable.arsitek
+                                            }
+                                        ),
+                                        contentDescription = "Arsitek ${index + 1}",
+                                        modifier = Modifier
+                                            .size(80.dp) // Ukuran gambar
+                                            .clip(RoundedCornerShape(8.dp)) // Bentuk gambar
+                                    )
+                                }
                             }
                         }
                     }
@@ -256,7 +264,11 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
             },
             label = { Text("Home") },
             selected = false,
-            onClick = { navController.navigate("home_screen") }
+            onClick = {
+                navController.navigate("home_screen") {
+                    popUpTo("home_screen") { inclusive = true }
+                }
+            }
         )
         NavigationBarItem(
             icon = {
@@ -269,7 +281,11 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
             },
             label = { Text("Location") },
             selected = false,
-            onClick = { navController.navigate("location_screen") }
+            onClick = {
+                navController.navigate("location_screen") {
+                    popUpTo("location_screen") { inclusive = true }
+                }
+            }
         )
         NavigationBarItem(
             icon = {
@@ -282,7 +298,11 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
             },
             label = { Text("Chat") },
             selected = false,
-            onClick = { navController.navigate("chat_screen") }
+            onClick = {
+                navController.navigate("chat_screen") {
+                    popUpTo("chat_screen") { inclusive = true }
+                }
+            }
         )
         NavigationBarItem(
             icon = {
@@ -295,7 +315,11 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
             },
             label = { Text("Profile") },
             selected = false,
-            onClick = { navController.navigate("profile_screen") }
+            onClick = {
+                navController.navigate("profile_screen") {
+                    popUpTo("profile_screen") { inclusive = true }
+                }
+            }
         )
     }
 }

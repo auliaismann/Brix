@@ -39,14 +39,14 @@ fun ChatScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 56.dp), // Padding bottom agar tidak tertutup oleh BottomNavigation
-            verticalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Gambar profil, nama pengguna, dan ikon pengaturan
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(14.dp),
+                    .padding(20.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
                 Row(
@@ -65,7 +65,7 @@ fun ChatScreen(navController: NavController) {
                                 .size(70.dp)
                                 .clip(CircleShape)
                                 .background(Color.Gray)
-                                .padding(4.dp)
+                                .padding(5.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -92,6 +92,7 @@ fun ChatScreen(navController: NavController) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .fillMaxHeight()
                     .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -100,8 +101,8 @@ fun ChatScreen(navController: NavController) {
                     ChatCustomBox(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(500.dp)
-                            .padding(start = 14.dp, end = 14.dp),
+                            .height(700.dp)
+                            .padding(start = 17.dp, end = 17.dp),
                         shape = RoundedCornerShape(16.dp)
                     ) {
                         Column(

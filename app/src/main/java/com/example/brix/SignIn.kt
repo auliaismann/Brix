@@ -141,6 +141,7 @@ fun SignInScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+
     Surface(
         color = Color.LightGray,
         modifier = Modifier.fillMaxSize()
@@ -195,7 +196,11 @@ fun SignInScreen(navController: NavController) {
                             Spacer(modifier = Modifier.height(10.dp))
 
                             Button(
-                                onClick = { /* Handle login */ },
+                                onClick = {
+                                    navController.navigate("home_screen") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                },
                                 modifier = Modifier
                                     .width(150.dp)
                                     .height(40.dp)
