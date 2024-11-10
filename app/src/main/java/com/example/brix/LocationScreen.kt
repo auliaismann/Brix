@@ -115,7 +115,6 @@ fun LocationScreen(navController: NavController) {
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
                             FeatureItem("Katalog", R.drawable.katalog)
-                            FeatureItem("Supplier", R.drawable.supplier)
                             FeatureItem("Komunitas", R.drawable.komonitas)
                             FeatureItem("Konsultasi", R.drawable.konsultasi)
                         }
