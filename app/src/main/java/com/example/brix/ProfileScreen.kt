@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -23,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.foundation.border
 import com.example.brix.ui.theme.BrixTheme
 
 class ProfileActivity : ComponentActivity() {
@@ -31,7 +32,7 @@ class ProfileActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BrixTheme {
-                val navController = rememberNavController() // Inisialisasi NavController
+                val navController = rememberNavController()
                 ProfileScreen(navController = navController)
             }
         }
@@ -40,57 +41,111 @@ class ProfileActivity : ComponentActivity() {
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray) // Background abu-abu muda
-    ) {
-        // Tombol Pengaturan di pojok kanan atas
-        IconButton(
-            onClick = { /* Navigasi ke halaman pengaturan atau aksi lainnya */ },
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(16.dp) // Padding agar tombol tidak terlalu ke tepi layar
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.setting), // Ganti dengan ikon pengaturan
-                contentDescription = "Settings",
-                tint = Color.Black
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(Color(0xFF232526), Color(0xFF414345)) // Gradient background
+                )
             )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp) // Padding for top margin
+        ) {
+            // Row for displaying the app name "Brixx"
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp) // Left padding for spacing
+            ) {
+                Text(
+                    text = "Brixx",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(end = 16.dp) // Spacing between app name and settings icon
+                        .offset(y = 10.dp) // Move the text down a little
+                )
+            }
+
+            // Settings Icon on the top-right corner
+            IconButton(
+                onClick = { /* Add action for settings icon */ },
+                modifier = Modifier.align(Alignment.TopEnd) // Aligning the icon to the top-right corner
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.setting), // Use the appropriate settings icon
+                    contentDescription = "Settings Icon",
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.White // Use white for the settings icon
+                )
+            }
         }
 
-        // Konten Profil di tengah atas layar
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Center profile picture, name, and date
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth()                // Memastikan konten memiliki lebar penuh
-                .align(Alignment.TopCenter)     // Posisikan di tengah atas
-                .padding(top = 100.dp)           // Tambahkan padding jika diperlukan
+            modifier = Modifier.fillMaxSize().weight(1f), // Allow it to take up available space
+            verticalArrangement = Arrangement.Center // Vertically center the content
         ) {
-
+            // Profile picture
             Image(
                 painter = painterResource(id = R.drawable.kucing),
                 contentDescription = "Profile Picture",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(128.dp)
                     .clip(CircleShape)
-                    .border(2.dp, Color.Gray, CircleShape) // Border untuk gambar
+                    .border(2.dp, Color.Gray, CircleShape)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
 
-            // Kartu Detail
-            ProfileDetailCard(label = "Name", value = "Tasa")
-            ProfileDetailCard(label = "Phone Number", value = "080080808080")
-            ProfileDetailCard(label = "E-mail", value = "tasa@gmail.com")
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Name
+            Text(
+                text = "Tasa",
+                color = Color.White,
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            // Date
+            Text(
+                text = "Monday, 20 Jan",
+                color = Color.White.copy(alpha = 0.7f),
+                fontSize = 14.sp
+            )
         }
 
-        // BottomNavigationBar di bagian bawah layar
-        ProfileBottomNavigationBar(
-            navController = navController,
-            modifier = Modifier.align(Alignment.BottomCenter) // Posisi di bawah
-        )
+        // User details section in a card
+        Card(
+            shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(2f), // This takes up the remaining space
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                ProfileDetailCard(label = "Name", value = "Tasa")
+                ProfileDetailCard(label = "Phone Number", value = "080080808080")
+                ProfileDetailCard(label = "E-mail", value = "tasa@gmail.com")
+            }
+        }
+
+        // Bottom navigation bar
+        ProfileBottomNavigationBar(navController = navController)
     }
 }
 
@@ -101,7 +156,7 @@ fun ProfileDetailCard(label: String, value: String) {
         border = BorderStroke(1.dp, Color(0xFFB0A070)),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp) // Tambahkan padding untuk margin antar kartu
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Row(
             modifier = Modifier
@@ -125,7 +180,6 @@ fun ProfileDetailCard(label: String, value: String) {
     }
 }
 
-// Reusable Bottom Navigation Bar
 @Composable
 fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier = Modifier) {
     NavigationBar(
@@ -134,7 +188,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
         NavigationBarItem(
             icon = {
                 Icon(
-                    painterResource(id = R.drawable.home_abu),
+                    painter = painterResource(id = R.drawable.home_abu),
                     contentDescription = "Home",
                     modifier = Modifier.size(32.dp),
                     tint = Color.Unspecified
@@ -147,7 +201,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
         NavigationBarItem(
             icon = {
                 Icon(
-                    painterResource(id = R.drawable.location_abu),
+                    painter = painterResource(id = R.drawable.location_abu),
                     contentDescription = "Location",
                     modifier = Modifier.size(32.dp),
                     tint = Color.Unspecified
@@ -160,7 +214,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
         NavigationBarItem(
             icon = {
                 Icon(
-                    painterResource(id = R.drawable.chat_abu),
+                    painter = painterResource(id = R.drawable.chat_abu),
                     contentDescription = "Chat",
                     modifier = Modifier.size(32.dp),
                     tint = Color.Unspecified
@@ -173,15 +227,15 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
         NavigationBarItem(
             icon = {
                 Icon(
-                    painterResource(id = R.drawable.profile_ijo),
+                    painter = painterResource(id = R.drawable.profile_ijo),
                     contentDescription = "Profile",
                     modifier = Modifier.size(32.dp),
                     tint = Color.Unspecified
                 )
             },
             label = { Text("Profile") },
-            selected = true, // Menunjukkan bahwa halaman profil sedang aktif
-            onClick = { /* Saat ini di halaman profil, tidak perlu navigasi ulang */ }
+            selected = true,
+            onClick = { /* Active profile page */ }
         )
     }
 }
