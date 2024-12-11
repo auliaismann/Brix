@@ -45,7 +45,7 @@ fun NavigationView() {
     NavHost(navController = navController, startDestination = "splash_screen") {
         composable("splash_screen"){SplashScreen(navController = navController)}
         composable("welcome_screen"){ WelcomeScreen(navController = navController) }
-        composable("login"){ SignInScreen(navController = navController) }
+        composable("signin"){ SignInScreen(navController = navController) }
         composable("signup"){ SignupScreen(navController = navController) }
         composable("home_screen"){ HomeScreen(navController = navController) }
         composable("location_screen"){ LocationScreen(navController = navController) }

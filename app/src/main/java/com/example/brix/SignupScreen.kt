@@ -25,19 +25,13 @@ import com.example.brix.ui.theme.poppinsFontFamily
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.draw.clip
-import com.example.brix.R
+import com.google.firebase.auth.FirebaseAuth
 
 // Define the font family for Poppins (make sure you have the correct font file in res/font)
 val PoppinsLightS = FontFamily(
     Font(R.font.poppins_light, FontWeight.Light)
 )
 
-// Define the regular Poppins font
-val poppinsFontFamily = FontFamily(
-    Font(R.font.poppins_regular, FontWeight.Normal)
-)
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignupScreen(
     navController: NavController,
@@ -45,6 +39,10 @@ fun SignupScreen(
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
+
+    // Firebase Auth instance
+    val auth = FirebaseAuth.getInstance()
 
     Surface(
         color = Color.LightGray,
@@ -94,6 +92,16 @@ fun SignupScreen(
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
                             )
 
+                            // Error message display
+                            if (errorMessage.isNotEmpty()) {
+                                Text(
+                                    text = errorMessage,
+                                    color = Color.Red,
+                                    style = TextStyle(fontSize = 14.sp),
+                                    modifier = Modifier.padding(bottom = 8.dp)
+                                )
+                            }
+
                             // Text fields for input
                             CTextField(hint = "Email", value = email, onValueChange = { email = it })
                             Spacer(modifier = Modifier.height(10.dp))
@@ -106,8 +114,22 @@ fun SignupScreen(
                             // Button Confirm
                             Button(
                                 onClick = {
-                                    navController.navigate("home_screen") {
-                                        popUpTo("login") { inclusive = true }
+                                    // Firebase registration logic
+                                    if (email.isNotEmpty() && password.isNotEmpty()) {
+                                        auth.createUserWithEmailAndPassword(email, password)
+                                            .addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    // Navigate to home screen on success
+                                                    navController.navigate("home_screen") {
+                                                        popUpTo("login") { inclusive = true }
+                                                    }
+                                                } else {
+                                                    // Show error message if registration fails
+                                                    errorMessage = task.exception?.localizedMessage ?: "Registration failed"
+                                                }
+                                            }
+                                    } else {
+                                        errorMessage = "Please fill in all fields."
                                     }
                                 },
                                 modifier = Modifier
@@ -139,10 +161,10 @@ fun SignupScreen(
                         .fillMaxWidth()
                         .padding(vertical = 16.dp)
                 ) {
-                    Divider(
-                        color = Color.Black,
+                    HorizontalDivider(
+                        modifier = Modifier.weight(1f),
                         thickness = 1.dp,
-                        modifier = Modifier.weight(1f)
+                        color = Color.Black
                     )
 
                     Text(
@@ -155,10 +177,10 @@ fun SignupScreen(
                         modifier = Modifier.padding(horizontal = 8.dp)
                     )
 
-                    Divider(
-                        color = Color.Black,
+                    HorizontalDivider(
+                        modifier = Modifier.weight(1f),
                         thickness = 1.dp,
-                        modifier = Modifier.weight(1f)
+                        color = Color.Black
                     )
                 }
 
@@ -228,6 +250,7 @@ fun SignupScreen(
         }
     }
 }
+
 
 // Custom TextField Composable
 @OptIn(ExperimentalMaterial3Api::class)
