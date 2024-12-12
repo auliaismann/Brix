@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -64,6 +65,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.firebase.vertexai)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -83,6 +85,10 @@ dependencies {
     implementation ("androidx.navigation:navigation-compose:2.6.0")  // Untuk navigasi Compose
     implementation ("androidx.compose.material3:material3:1.2.0-alpha01")
     implementation ("androidx.navigation:navigation-compose:2.5.0")
+    implementation ("com.google.firebase:firebase-auth:21.0.5") // Firebase Auth
+    implementation ("com.google.firebase:firebase-firestore:24.4.0")
+    implementation ("com.google.android.gms:play-services-auth:20.0.0")
+
 
 
 }

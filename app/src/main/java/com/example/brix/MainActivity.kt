@@ -43,25 +43,33 @@ class MainActivity : ComponentActivity() {
 fun NavigationView() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "splash_screen") {
-        composable("splash_screen"){SplashScreen(navController = navController)}
-        composable("welcome_screen"){ WelcomeScreen(navController = navController) }
-        composable("signin"){ SignInScreen(navController = navController) }
-        composable("signup"){ SignupScreen(navController = navController) }
-        composable("home_screen"){ HomeScreen(navController = navController) }
-        composable("location_screen"){ LocationScreen(navController = navController) }
-        composable("chat_screen"){ ChatScreen(navController = navController) }
-        composable("profile_screen"){ ProfileScreen(navController = navController) }
+        composable("splash_screen") { SplashScreen(navController = navController) }
+        composable("welcome_screen") { WelcomeScreen(navController = navController) }
+        composable("login") { SignInScreen(navController = navController) }
+        composable("signup") { SignupScreen(navController = navController) }
+        composable("home_screen") { HomeScreen(navController = navController) }
+        composable("location_screen") { LocationScreen(navController = navController) }
+        composable("chat_screen") { ChatScreen(navController = navController) }
+
+        // Navigasi ke ProfileScreen dengan parameter 'userId'
+        composable("profile_screen/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")
+            if (userId != null) {
+                ProfileScreen(navController = navController, userId = userId)
+            }
+        }
     }
 }
 
 @Composable
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(key1 = true) {
-        delay(5000L)
+        delay(3000L) // Durasi lebih pendek agar lebih cepat
         navController.navigate("welcome_screen") {
             popUpTo("splash_screen") { inclusive = true }
         }
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -78,5 +86,3 @@ fun SplashScreen(navController: NavController) {
         )
     }
 }
-
-

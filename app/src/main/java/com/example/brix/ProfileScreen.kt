@@ -1,6 +1,7 @@
 package com.example.brix
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -12,6 +13,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +30,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.brix.ui.theme.BrixTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,14 +39,49 @@ class ProfileActivity : ComponentActivity() {
         setContent {
             BrixTheme {
                 val navController = rememberNavController()
-                ProfileScreen(navController = navController)
+
+                // Mendapatkan email pengguna yang sedang login
+                val email = FirebaseAuth.getInstance().currentUser?.email
+
+                if (email != null) {
+                    ProfileScreen(navController = navController, userId = email)
+                } else {
+                    // Tampilkan pesan error atau lakukan tindakan lain jika email tidak ditemukan
+                    Log.e("ProfileActivity", "User email not found")
+                }
             }
         }
     }
 }
 
+
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, userId: String) {
+    val db = FirebaseFirestore.getInstance()
+    val userData = remember { mutableStateOf(UserData("", "", "")) }
+
+    // Fetch user data from Firestore when userId changes
+    LaunchedEffect(key1 = userId) {
+        db.collection("Users")  // Koleksi yang menyimpan data pengguna
+            .whereEqualTo("email", userId)  // Gunakan email untuk mencari pengguna
+            .get()  // Ambil semua dokumen yang sesuai
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val document = querySnapshot.documents[0]  // Ambil dokumen pertama
+                    userData.value = UserData(
+                        name = document.getString("name") ?: "User",
+                        phone = document.getString("phone") ?: "Not Set",
+                        email = document.getString("email") ?: "Not Set"
+                    )
+                    Log.w("Firestore", "No user found with the given email")
+                } else {
+                    Log.w("Firestore", "No user found with the given email")}
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error getting documents", e)
+            }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -112,7 +153,7 @@ fun ProfileScreen(navController: NavController) {
 
             // Name
             Text(
-                text = "Tasa",
+                text = userData.value.name,
                 color = Color.White,
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold
@@ -138,9 +179,9 @@ fun ProfileScreen(navController: NavController) {
                 modifier = Modifier
                     .padding(16.dp)
             ) {
-                ProfileDetailCard(label = "Name", value = "Tasa")
-                ProfileDetailCard(label = "Phone Number", value = "080080808080")
-                ProfileDetailCard(label = "E-mail", value = "tasa@gmail.com")
+                ProfileDetailCard(label = "Name", value = userData.value.name)
+                ProfileDetailCard(label = "Phone Number", value = userData.value.phone)
+                ProfileDetailCard(label = "E-mail", value = userData.value.email)
             }
         }
 
@@ -148,6 +189,8 @@ fun ProfileScreen(navController: NavController) {
         ProfileBottomNavigationBar(navController = navController)
     }
 }
+
+
 
 @Composable
 fun ProfileDetailCard(label: String, value: String) {
@@ -185,6 +228,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
     NavigationBar(
         modifier = modifier.fillMaxWidth()
     ) {
+        // Home
         NavigationBarItem(
             icon = {
                 Icon(
@@ -198,6 +242,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
             selected = false,
             onClick = { navController.navigate("home_screen") }
         )
+        // Location
         NavigationBarItem(
             icon = {
                 Icon(
@@ -211,6 +256,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
             selected = false,
             onClick = { navController.navigate("location_screen") }
         )
+        // Chat
         NavigationBarItem(
             icon = {
                 Icon(
@@ -224,6 +270,7 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
             selected = false,
             onClick = { navController.navigate("chat_screen") }
         )
+        // Profile (active)
         NavigationBarItem(
             icon = {
                 Icon(
@@ -234,15 +281,18 @@ fun ProfileBottomNavigationBar(navController: NavController, modifier: Modifier 
                 )
             },
             label = { Text("Profile") },
-            selected = true,
-            onClick = { /* Active profile page */ }
+            selected = true, // Menandakan bahwa saat ini profile screen aktif
+            onClick = { /* No action needed since it's already active */ }
         )
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
     val navController = rememberNavController()
-    ProfileScreen(navController = navController)
+    ProfileScreen(navController = navController, userId = "aulputri@gmail.com")
 }
+
+data class UserData(val name: String, val phone: String, val email: String)

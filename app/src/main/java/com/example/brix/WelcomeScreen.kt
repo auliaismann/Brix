@@ -69,10 +69,10 @@ fun WelcomeScreen(
             )
             Spacer(modifier = Modifier.weight(1f))
 
-            CButton(text = "Sign In With Email",
+            CButton(
+                text = "Sign In With Email",
                 onClick = {
-                    navController.navigate("signin") {
-                        // Mengatur agar halaman login bisa navigasi kembali dengan benar
+                    navController.navigate("login") { // Ganti "signin" menjadi "login" sesuai rute di MainActivity
                         popUpTo(navController.graph.startDestinationId) { inclusive = true }
                     }
                 }

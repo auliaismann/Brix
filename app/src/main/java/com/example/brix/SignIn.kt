@@ -17,8 +17,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -44,6 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 val PoppinsLight = FontFamily(
     Font(R.font.poppins_light, FontWeight.Light)
@@ -85,7 +87,6 @@ fun CTextFieldSignIn(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordDivider() {
     Box(
@@ -111,10 +112,10 @@ fun ForgotPasswordDivider() {
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     ) {
-        Divider(
-            color = Color.Black,
+        HorizontalDivider(
+            modifier = Modifier.weight(1f),
             thickness = 1.dp,
-            modifier = Modifier.weight(1f)
+            color = Color.Black
         )
 
         Text(
@@ -127,20 +128,42 @@ fun ForgotPasswordDivider() {
             modifier = Modifier.padding(horizontal = 8.dp)
         )
 
-        Divider(
-            color = Color.Black,
+        HorizontalDivider(
+            modifier = Modifier.weight(1f),
             thickness = 1.dp,
-            modifier = Modifier.weight(1f)
+            color = Color.Black
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var emailError by remember { mutableStateOf(false) }
+    var passwordError by remember { mutableStateOf(false) }
+    var loginError by remember { mutableStateOf("") }
 
+    // Firebase Auth instance
+    val auth = FirebaseAuth.getInstance()
+
+    // Function to handle sign-in
+    fun signInWithEmailPassword() {
+        if (!emailError && !passwordError && email.isNotEmpty() && password.isNotEmpty()) {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user: FirebaseUser? = auth.currentUser
+                        // Navigate to home screen on successful login
+                        navController.navigate("home_screen") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    } else {
+                        loginError = task.exception?.localizedMessage ?: "Login failed"
+                    }
+                }
+        }
+    }
 
     Surface(
         color = Color.LightGray,
@@ -164,8 +187,6 @@ fun SignInScreen(navController: NavController) {
                 ) {
                     Box(
                         modifier = Modifier
-                            .width(20.dp) // Box akan mengisi lebar penuh
-                            .height(100.dp) // Tinggi box tetap, meskipun lebar bisa menyesuaikan konten
                             .background(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(Color.DarkGray, Color.Black)
@@ -189,17 +210,54 @@ fun SignInScreen(navController: NavController) {
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
                             )
 
-                            CTextFieldSignIn(hint = "Email", value = email, onValueChange = { email = it })
+                            CTextFieldSignIn(
+                                hint = "Email",
+                                value = email,
+                                onValueChange = {
+                                    email = it
+                                    emailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                                }
+                            )
+                            if (emailError) {
+                                Text(
+                                    text = "Invalid email address",
+                                    color = Color.Red,
+                                    style = TextStyle(fontSize = 12.sp)
+                                )
+                            }
+
                             Spacer(modifier = Modifier.height(10.dp))
-                            CTextFieldSignIn(hint = "Password", value = password, onValueChange = { password = it })
+
+                            CTextFieldSignIn(
+                                hint = "Password",
+                                value = password,
+                                onValueChange = {
+                                    password = it
+                                    passwordError = password.length < 6
+                                }
+                            )
+                            if (passwordError) {
+                                Text(
+                                    text = "Password must be at least 6 characters",
+                                    color = Color.Red,
+                                    style = TextStyle(fontSize = 12.sp)
+                                )
+                            }
+
+                            // Display login error if any
+                            if (loginError.isNotEmpty()) {
+                                Text(
+                                    text = loginError,
+                                    color = Color.Red,
+                                    style = TextStyle(fontSize = 12.sp)
+                                )
+                            }
 
                             Spacer(modifier = Modifier.height(10.dp))
 
                             Button(
                                 onClick = {
-                                    navController.navigate("home_screen") {
-                                        popUpTo("login") { inclusive = true }
-                                    }
+                                    signInWithEmailPassword()
                                 },
                                 modifier = Modifier
                                     .width(150.dp)
@@ -263,5 +321,4 @@ fun SignInScreen(navController: NavController) {
 @Preview(showBackground = true, widthDp = 320, heightDp = 640)
 @Composable
 fun SignInScreenPreview() {
-    SignInScreen(navController = rememberNavController())
-}
+    SignInScreen(navController = rememberNavController())}

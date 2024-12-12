@@ -25,12 +25,13 @@ import com.example.brix.ui.theme.poppinsFontFamily
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.draw.clip
-import com.google.firebase.auth.FirebaseAuth
 
 // Define the font family for Poppins (make sure you have the correct font file in res/font)
 val PoppinsLightS = FontFamily(
     Font(R.font.poppins_light, FontWeight.Light)
 )
+
+
 
 @Composable
 fun SignupScreen(
@@ -39,10 +40,6 @@ fun SignupScreen(
     var email by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf("") }
-
-    // Firebase Auth instance
-    val auth = FirebaseAuth.getInstance()
 
     Surface(
         color = Color.LightGray,
@@ -92,16 +89,6 @@ fun SignupScreen(
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
                             )
 
-                            // Error message display
-                            if (errorMessage.isNotEmpty()) {
-                                Text(
-                                    text = errorMessage,
-                                    color = Color.Red,
-                                    style = TextStyle(fontSize = 14.sp),
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
-                            }
-
                             // Text fields for input
                             CTextField(hint = "Email", value = email, onValueChange = { email = it })
                             Spacer(modifier = Modifier.height(10.dp))
@@ -114,22 +101,8 @@ fun SignupScreen(
                             // Button Confirm
                             Button(
                                 onClick = {
-                                    // Firebase registration logic
-                                    if (email.isNotEmpty() && password.isNotEmpty()) {
-                                        auth.createUserWithEmailAndPassword(email, password)
-                                            .addOnCompleteListener { task ->
-                                                if (task.isSuccessful) {
-                                                    // Navigate to home screen on success
-                                                    navController.navigate("home_screen") {
-                                                        popUpTo("login") { inclusive = true }
-                                                    }
-                                                } else {
-                                                    // Show error message if registration fails
-                                                    errorMessage = task.exception?.localizedMessage ?: "Registration failed"
-                                                }
-                                            }
-                                    } else {
-                                        errorMessage = "Please fill in all fields."
+                                    navController.navigate("home_screen") {
+                                        popUpTo("login") { inclusive = true }
                                     }
                                 },
                                 modifier = Modifier
@@ -250,7 +223,6 @@ fun SignupScreen(
         }
     }
 }
-
 
 // Custom TextField Composable
 @OptIn(ExperimentalMaterial3Api::class)

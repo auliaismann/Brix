@@ -1,5 +1,6 @@
 package com.example.brix
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,6 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 // Inisialisasi FontFamily untuk Poppins-Thin
 val poppinsLightC = FontFamily(Font(resId = R.font.poppins_light))
@@ -321,17 +324,27 @@ fun ChatBottomNavigationBar(navController: NavController, modifier: Modifier = M
             icon = {
                 Icon(
                     painterResource(id = R.drawable.profile_abu),
-                    contentDescription = "Others",
+                    contentDescription = "Account",
                     modifier = Modifier.size(32.dp),
-                    tint = Color.Unspecified // Menggunakan warna asli dari ikon
+                    tint = Color.Unspecified
                 )
             },
-            label = { Text("Others") },
+            label = { Text("Account") },
             selected = false,
-            onClick = { navController.navigate("others_screen") }
+            onClick = {
+                // Ambil userId dari FirebaseAuth
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                if (userId != null) {
+                    // Navigasi langsung ke ProfileScreen dengan userId
+                    navController.navigate("profile_screen/$userId")
+                } else {
+                    Log.e("Navigation", "User ID tidak ditemukan")
+                }
+            }
         )
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

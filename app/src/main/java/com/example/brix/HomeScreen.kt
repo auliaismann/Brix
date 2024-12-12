@@ -1,5 +1,6 @@
 package com.example.brix
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 val poppinsLight = FontFamily(
     Font(R.font.poppins_light, FontWeight.Light)
@@ -334,13 +337,19 @@ fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modif
             label = { Text("Account") },
             selected = false,
             onClick = {
-                navController.navigate("account_screen") {
-                    popUpTo("account_screen") { inclusive = true }
+                // Ambil userId dari FirebaseAuth
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                if (userId != null) {
+                    // Navigasi langsung ke ProfileScreen dengan userId
+                    navController.navigate("profile_screen/$userId")
+                } else {
+                    Log.e("Navigation", "User ID tidak ditemukan")
                 }
             }
         )
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
